@@ -14,7 +14,9 @@ class GradeController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'message' => 'ok'
+        ], 200);
     }
 
     /**
