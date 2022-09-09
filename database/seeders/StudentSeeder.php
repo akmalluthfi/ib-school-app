@@ -21,7 +21,7 @@ class StudentSeeder extends Seeder
         $subjects = ['Math', 'Biology', 'Chemistry', 'Geography', 'Art', 'English'];
 
         foreach ($grades as $grade) {
-            for ($i = 0; $i < $grade->capacity; $i++) {
+            for ($i = 0; $i < rand(35, 40); $i++) {
 
                 $student = new Student();
                 $student->name = fake()->firstName() . " " . fake()->lastName();

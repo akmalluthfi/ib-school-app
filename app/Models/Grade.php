@@ -7,7 +7,7 @@ use Jenssegers\Mongodb\Eloquent\Model;
 class Grade extends Model
 {
     protected $fillable = [
-        'name', 'capacity', 'teacher', 'room'
+        'name', 'teacher'
     ];
 
     public $timestamps = false;

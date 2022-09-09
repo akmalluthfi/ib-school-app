@@ -37,20 +37,6 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        // hitung nilai permapel
-        // hasil 
-        /*
-            subjects: [
-                {name: 'math', nilai: 88}, 
-                {name: 'art', nilai: 90}
-            ]
-
-            subjects: {
-                math: 12, 
-                art: 23
-            } 
-        */
-
         $result_score = collect();
 
         foreach ($student->subjects as $subject) {

@@ -38,9 +38,8 @@ Route::get('/students/{student}/subjects/{subject}', [SubjectController::class, 
 Route::apiResource('/grades', GradeController::class);
 Route::apiResource('/students', StudentController::class);
 
-
 Route::fallback(function () {
     return response()->json([
-        'message' => 'content not found',
+        'message' => 'Not Found.',
     ], 404);
 });
