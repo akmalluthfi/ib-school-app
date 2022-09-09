@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Models\Grade;
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +21,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    die();
+    $grade = Grade::all()->first();
+
+    foreach ($grade->students as $student) {
+        var_dump($student->name);
+    }
+
+    dd($grade->students);
 });
+
+// show all subject from student id
+Route::get('/students/{student}/subjects', [SubjectController::class, 'index']);
+// show detail subject from student id
+Route::get('/students/{student}/subjects/{subject}', [SubjectController::class, 'show']);
 
 Route::apiResource('/grades', GradeController::class);
 Route::apiResource('/students', StudentController::class);
-// Route::apiResource('/students/${student_id}/subjects', ::class);
+
 
 Route::fallback(function () {
     return response()->json([

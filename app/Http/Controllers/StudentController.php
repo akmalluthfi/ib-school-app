@@ -69,7 +69,8 @@ class StudentController extends Controller
 
             $result_score->push([
                 'name' => $subject->name,
-                'score' => $score->sum()
+                'score' => (float)number_format($score->sum(), 2),
+                'subject_url' => url("api/students/$student->id/subjects/$subject->id")
             ]);
         }
 

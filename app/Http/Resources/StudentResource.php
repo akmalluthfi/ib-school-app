@@ -20,9 +20,10 @@ class StudentResource extends JsonResource
             'url' => url("api/students/$this->id"),
         ];
 
-        if (isset($this->grade)) {
-            $student['grade'] = $this->grade->name;
-            $student['grade_url'] = url("api/grades/$this->grade->id");
+        $grade = $this->grade;
+        if (isset($grade)) {
+            $student['grade'] = $grade->name;
+            $student['grade_url'] = url("api/grades/$grade->id");
         }
 
         return $student;

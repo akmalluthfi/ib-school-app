@@ -15,14 +15,25 @@ class GradeSeeder extends Seeder
      */
     public function run()
     {
+        $rooms = 1;
         $grades = ['A', 'B', 'C', 'D', 'E', 'F'];
         for ($i = 1; $i <= 3; $i++) {
             foreach ($grades as $grade) {
                 Grade::create([
                     'name' => "$i-$grade",
-                    'capacity' => rand(39, 42),
+                    'teacher' => $this->generateName(),
+                    'capacity' => rand(36, 40),
+                    'room' => "R-$rooms",
                 ]);
+                $rooms++;
             }
         }
+    }
+
+    private function generateName()
+    {
+        $gender = fake()->randomElement(['male', 'female']);
+        $name = fake()->firstName($gender) . " " . fake()->lastName();
+        return fake()->title($gender) . " " . $name;
     }
 }

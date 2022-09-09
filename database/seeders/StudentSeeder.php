@@ -24,7 +24,7 @@ class StudentSeeder extends Seeder
             for ($i = 0; $i < $grade->capacity; $i++) {
 
                 $student = new Student();
-                $student->name = fake()->name();
+                $student->name = fake()->firstName() . " " . fake()->lastName();
                 $student->grade()->associate($grade);
                 $student->save();
 

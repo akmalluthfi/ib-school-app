@@ -17,6 +17,7 @@ class GradeController extends Controller
     {
         return response()->json(Grade::all()->map(function ($grade) {
             $grade['url'] = url("api/grades/$grade->id");
+            $grade['capacity'] = $grade->students()->count();
             return $grade;
         }), 200);
     }
@@ -45,6 +46,7 @@ class GradeController extends Controller
         });
 
         $grade['students'] = $students;
+        $grade['capacity'] = $students->count();
 
         return response()->json($grade, 200);
     }
