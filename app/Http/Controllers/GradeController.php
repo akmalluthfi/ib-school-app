@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\GradeResource;
+use App\Http\Resources\StudentResource;
 use App\Models\Grade;
-use App\Models\Student;
 use Illuminate\Http\Request;
 
 class GradeController extends Controller
@@ -17,7 +16,7 @@ class GradeController extends Controller
     public function index()
     {
         return response()->json(Grade::all()->map(function ($grade) {
-            $grade['url'] = url()->current() . "/$grade->id";
+            $grade['url'] = url("api/grades/$grade->id");
             return $grade;
         }), 200);
     }
@@ -42,11 +41,7 @@ class GradeController extends Controller
     public function show(Grade $grade)
     {
         $students = $grade->students()->get(['name'])->map(function ($student) {
-            return [
-                '_id' => $student->id,
-                'name' => $student->name,
-                'url' => url("api/students/$student->id"),
-            ];
+            return new StudentResource($student);
         });
 
         $grade['students'] = $students;

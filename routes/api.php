@@ -19,20 +19,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    $grades = Grade::all();
-
-    // dd($grades->first()->students);
-
-
     die();
-
-    // return response()->json([
-    //     'name' => 'test'
-    // ]);
 });
 
 Route::apiResource('/grades', GradeController::class);
 Route::apiResource('/students', StudentController::class);
+// Route::apiResource('/students/${student_id}/subjects', ::class);
 
 Route::fallback(function () {
     return response()->json([
