@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Route;
 
 class GradeResource extends JsonResource
 {
@@ -14,6 +15,11 @@ class GradeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            '_id' => $this->id,
+            'name' => $this->name,
+            'capacity' => $this->capacity,
+            'url' => url()->current() . "/$this->id",
+        ];
     }
 }

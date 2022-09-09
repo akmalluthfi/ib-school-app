@@ -21,17 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', function () {
     $grades = Grade::all();
 
-    $students = $grades->first()->students()->get();
+    // dd($grades->first()->students);
 
-    // foreach ($students as $student) {
-    //     var_dump($student->name);
-    // }
-
-    $subjects = ['Math', 'Biology', 'Chemistry', 'Geography', 'Art', 'English'];
-
-    foreach ($subjects as $subject) {
-        var_dump($subject);
-    }
 
     die();
 
@@ -40,8 +31,8 @@ Route::get('/test', function () {
     // ]);
 });
 
-Route::apiResource('/grade', GradeController::class);
-Route::apiResource('/student', StudentController::class);
+Route::apiResource('/grades', GradeController::class);
+Route::apiResource('/students', StudentController::class);
 
 Route::fallback(function () {
     return response()->json([
