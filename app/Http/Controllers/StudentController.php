@@ -16,7 +16,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return new StudentCollection(Student::paginate());
+        return new StudentCollection(Student::with('grade')->paginate());
     }
 
     /**
@@ -65,7 +65,7 @@ class StudentController extends Controller
             ]);
         }
 
-        $data = collect(new StudentResource($student));
+        $data = collect(new StudentResource($student->loadMissing('grade')));
         // tambahkan subject score ke dalam array
         $data->put('subject_score', $subject_score);
 

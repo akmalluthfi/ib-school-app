@@ -18,7 +18,8 @@ class StudentResource extends JsonResource
             '_id' => $this->id,
             'name' => $this->name,
             'url' => url("api/students/$this->id"),
-            'grade' => new GradeResource($this->grade)
+            // 'grade' => new GradeResource($this->grade)
+            'grade' => new GradeResource($this->whenLoaded('grade'))
         ];
     }
 
