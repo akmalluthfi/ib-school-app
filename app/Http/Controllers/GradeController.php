@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\GradeCollection;
 use App\Http\Resources\GradeResource;
-use App\Http\Resources\StudentResource;
 use App\Models\Grade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class GradeController extends Controller
 {
@@ -37,14 +35,18 @@ class GradeController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'errors' => $validator->errors()
+                'status' => 'Validation Error',
+                'data' => null,
+                'error' => $validator->errors()
             ], 422);
         }
 
-        Grade::create($validator->validated());
+        $grade = Grade::create($validator->validated());
 
         return response()->json([
-            'message' => 'Created'
+            'message' => 'Created',
+            'data' => $grade,
+            'error' => null
         ], 201);
     }
 
@@ -85,13 +87,19 @@ class GradeController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'errors' => $validator->errors()
+                'status' => 'Validation Error',
+                'data' => null,
+                'error' => $validator->errors()
             ], 422);
         }
 
         $grade->update($validator->validated());
 
-        return response()->json($grade);
+        return response()->json([
+            'status' => 'Updated',
+            'data' => $grade,
+            'error' => null,
+        ], 200);
     }
 
     /**

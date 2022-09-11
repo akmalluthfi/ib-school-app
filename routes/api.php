@@ -4,9 +4,6 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Models\Grade;
-use App\Models\Student;
-use App\Models\Subject;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,18 +27,16 @@ Route::get('/test', function () {
     dd($grade->students);
 });
 
-// // show all subject from student id
-// Route::get('/students/{student}/subjects', [SubjectController::class, 'index']);
-// // show detail subject from student id
-// Route::get('/students/{student}/subjects/{subject}', [SubjectController::class, 'show']);
+Route::apiResource('/grades', GradeController::class)->except('destroy');
+Route::apiResource('/students', StudentController::class)->except([
+    'store', 'update', 'destroy'
+]);
+Route::apiResource('/students/{student}/subjects', SubjectController::class)->except([
+    'update', 'destroy'
+]);
 
-Route::apiResource('/grades', GradeController::class);
-Route::apiResource('/students', StudentController::class);
-
-Route::apiResource('/students/{student}/subjects', SubjectController::class);
-
-// Route::fallback(function () {
-//     return response()->json([
-//         'message' => 'Not Found.',
-//     ], 404);
-// });
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Not Found.',
+    ], 404);
+});
