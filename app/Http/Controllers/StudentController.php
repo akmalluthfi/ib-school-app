@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StudentCollection;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return StudentResource::collection(Student::all()->take(5));
+        return new StudentCollection(Student::paginate());
     }
 
     /**
@@ -37,15 +38,18 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        $result_score = collect();
+        $subject_score = collect();
 
         foreach ($student->subjects as $subject) {
+            // menghitung nilai latihan soal
             $exercises = collect($subject->exercises);
             $total_exercises = 15 / 100 * ($exercises->sum() / $exercises->count());
 
+            // menghitung nilai ulangan harian
             $daily_test = collect($subject->daily_test);
             $total_daily_test = 20 / 100 * ($daily_test->sum() / $daily_test->count());
 
+            // menghitung total nilai
             $score = collect([
                 $total_exercises,
                 $total_daily_test,
@@ -53,20 +57,22 @@ class StudentController extends Controller
                 (40 / 100 * $subject->semester_test)
             ]);
 
-            $result_score->push([
+            // simpan ke dalam array
+            $subject_score->push([
                 'name' => $subject->name,
                 'score' => (float)number_format($score->sum(), 2),
                 'subject_url' => url("api/students/$student->id/subjects/$subject->id")
             ]);
         }
 
-        $grade = $student->grade;
+        $data = collect(new StudentResource($student));
+        // tambahkan subject score ke dalam array
+        $data->put('subject_score', $subject_score);
 
         return response()->json([
-            'name' => $student->name,
-            'grade' => $grade->name,
-            'grade_url' => url("api/grades/$grade->id"),
-            'subjects' => $result_score
+            'status' => 'OK',
+            'data' => $data,
+            'error' => null
         ], 200);
     }
 

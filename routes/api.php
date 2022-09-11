@@ -30,16 +30,18 @@ Route::get('/test', function () {
     dd($grade->students);
 });
 
-// show all subject from student id
-Route::get('/students/{student}/subjects', [SubjectController::class, 'index']);
-// show detail subject from student id
-Route::get('/students/{student}/subjects/{subject}', [SubjectController::class, 'show']);
+// // show all subject from student id
+// Route::get('/students/{student}/subjects', [SubjectController::class, 'index']);
+// // show detail subject from student id
+// Route::get('/students/{student}/subjects/{subject}', [SubjectController::class, 'show']);
 
 Route::apiResource('/grades', GradeController::class);
 Route::apiResource('/students', StudentController::class);
 
-Route::fallback(function () {
-    return response()->json([
-        'message' => 'Not Found.',
-    ], 404);
-});
+Route::apiResource('/students/{student}/subjects', SubjectController::class);
+
+// Route::fallback(function () {
+//     return response()->json([
+//         'message' => 'Not Found.',
+//     ], 404);
+// });

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class StudentResource extends JsonResource
+class SubjectResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,18 +14,15 @@ class StudentResource extends JsonResource
      */
     public function toArray($request)
     {
+        $student = $this->student;
         return [
-            '_id' => $this->id,
+            'id' => $this->id,
             'name' => $this->name,
-            'url' => url("api/students/$this->id"),
-            'grade' => new GradeResource($this->grade)
-        ];
-    }
-
-    public function with($request)
-    {
-        return [
-            'tasts' => 'sd'
+            'subject_url' => url("api/students/$student->id/subjects/$this->id"),
+            'exercises' => $this->exercises,
+            'daily_test' => $this->daily_test,
+            'midterm_test' => $this->midterm_test,
+            'semester_test' => $this->semester_test,
         ];
     }
 }

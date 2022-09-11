@@ -3,10 +3,21 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Route;
 
 class GradeResource extends JsonResource
 {
+    /**
+     * __construct
+     *
+     * @param  mixed $resource
+     * @param  bool $withRelations
+     * @return void
+     */
+    public function __construct($resource, private $withRelations = false)
+    {
+        parent::__construct($resource);
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -18,8 +29,10 @@ class GradeResource extends JsonResource
         return [
             '_id' => $this->id,
             'name' => $this->name,
-            'capacity' => $this->capacity,
-            'url' => url()->current() . "/$this->id",
+            'teacher' => $this->teacher,
+            'capacity' => $this->students->count(),
+            'grade_url' => url("api/grades/$this->id"),
+            'students' => StudentResource::collection($this->when($this->withRelations, $this->students)),
         ];
     }
 }

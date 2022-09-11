@@ -50,14 +50,18 @@ class Handler extends ExceptionHandler
             //
         });
 
+        // custom exceptions for route model binding
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Not Found.'
+                    'status' => 'Not Found.',
+                    'data' => null,
+                    'error' => 'Resouce not found.'
                 ], 404);
             }
         });
 
+        // custom exceptions for resource controller
         $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([

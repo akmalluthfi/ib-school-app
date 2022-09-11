@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\GradeCollection;
+use App\Http\Resources\GradeResource;
 use App\Http\Resources\StudentResource;
 use App\Models\Grade;
 use Illuminate\Http\Request;
@@ -17,11 +19,7 @@ class GradeController extends Controller
      */
     public function index()
     {
-        return response()->json(Grade::all()->map(function ($grade) {
-            $grade['url'] = url("api/grades/$grade->id");
-            $grade['capacity'] = $grade->students()->count();
-            return $grade;
-        }), 200);
+        return new GradeCollection(Grade::paginate());
     }
 
     /**
@@ -58,14 +56,11 @@ class GradeController extends Controller
      */
     public function show(Grade $grade)
     {
-        $students = $grade->students()->get(['name'])->map(function ($student) {
-            return new StudentResource($student);
-        });
-
-        $grade['students'] = $students;
-        $grade['capacity'] = $students->count();
-
-        return response()->json($grade, 200);
+        return response()->json([
+            'status' => 'OK',
+            'data' => new GradeResource($grade, true),
+            'error' => null
+        ]);
     }
 
     /**
